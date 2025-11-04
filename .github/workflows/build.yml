@@ -1,0 +1,37 @@
+# .github/workflows/build.yml
+
+# Name der Pipeline
+name: Java CI Build Pipeline
+
+# 1. Auslöser (Trigger): Wann soll die Pipeline starten?
+# Bei jedem Push auf den 'main'-Branch
+on:
+  push:
+    branches: [ main ] 
+
+# 2. Jobs: Was soll getan werden?
+jobs:
+  build:
+    # Betriebssystem, auf dem der Job läuft (ein "Runner")
+    runs-on: ubuntu-latest
+
+    # 3. Schritte (Steps), die nacheinander ausgeführt werden
+    steps:
+    # Schritt 1: Code aus dem Repository holen
+    - name: Code auschecken
+      uses: actions/checkout@v3
+
+    # Schritt 2: Java-Umgebung (JDK) auf dem Runner einrichten
+    - name: Java JDK aufsetzen
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    # Schritt 3: Java-Code kompilieren (siehe Aufgabenstellung)
+    - name: Java-Code kompilieren
+      run: javac -d bin src/Main.java
+
+    # Schritt 4: "Tests" ausführen (siehe Aufgabenstellung)
+    - name: Tests ausführen
+      run: java --class-path bin Main
